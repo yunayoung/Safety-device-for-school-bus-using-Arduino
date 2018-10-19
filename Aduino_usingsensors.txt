@@ -1,0 +1,56 @@
+#include<SoftwareSerial.h>
+#define pinPIR A0 // 움직임 감지
+#define pinLED 13
+int Tx=6;
+int Rx=7;
+
+SoftwareSerial btSerial(Tx,Rx);
+
+// 프로그램 초기화
+void setup()
+{
+  Serial.begin(9600);
+  Serial.println("Arduino Examples - PIR Motion Detector Sensor");
+  btSerial.begin(9600);
+  pinMode(pinPIR, INPUT);
+  pinMode(pinLED, OUTPUT);
+
+}
+
+void loop() 
+{
+  int i = analogRead(pinPIR);
+  int l = map(i,0,1023,0,255);
+
+  Serial.print(i);
+  Serial.print(" / ");
+  Serial.println(l);
+  analogWrite(pinLED, l);
+/*
+ if(btSerial.available()){ // 안드로이드로부터 값 전달 받음
+	Serial.write(btSerial.read());
+}
+ if(Serial.available()){ // 센서값을 안드로이드에 전달
+	Serial.write(Serial.read());
+}
+*/
+  if(i!=0 & l!=0){
+	btSerial.println("감지");
+}
+
+  delay(100);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
